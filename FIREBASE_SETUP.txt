@@ -1,0 +1,26 @@
+SIMPLIAXIS DASHBOARD — FIREBASE SETUP
+
+1. Open Firebase Console and create a Firebase project.
+2. Create a Web App for the project.
+3. Enable Firestore Database.
+4. Copy the Firebase Web App config object.
+5. Either:
+   - paste the config into firebase-config.js and deploy, OR
+   - open Dashboard → Settings → Firebase Database and click Save & Connect.
+6. Configure Firestore Security Rules and Firebase Authentication before using shared production data.
+
+What this integration stores in Firestore:
+- users: metadata only (NEVER passwords/OTP/lock internals)
+- tickets
+- updates
+- notifications
+- settings
+- targets (mirror; existing Target Management endpoint remains authoritative)
+- dashboardMeta/current (row count, sync time, selected month/source metadata)
+
+What remains where it is:
+- Google Sheets remains the source for live analytical rows.
+- IndexedDB remains the large browser cache for live rows and saved snapshots.
+- Existing authentication and business logic are not replaced by Firebase.
+
+If Firebase is not configured, the dashboard automatically stays in its current LocalStorage/IndexedDB mode.

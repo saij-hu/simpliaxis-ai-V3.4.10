@@ -1,0 +1,21 @@
+SALES TARGET SAVE VERIFICATION FIX
+
+This package includes a separate Monthly Revenue Target alongside Monthly Sales Target.
+It updates the dashboard and Apps Script to:
+- show both Monthly Sales Target and Monthly Revenue Target in Target Management;
+- save both values together through the `setTargets` action;
+- create/read a RevenueTarget column at the next available column in SalesVsTarget while preserving existing columns A:O;
+- return both values in the GET response and verify both before showing success;
+- normalize Month and CRE when verifying server responses;
+- roll back local optimistic state and show the real error on a failed shared save;
+- mirror successfully saved target rows to Firebase after Apps Script verification.
+
+IMPORTANT DEPLOYMENT STEPS
+1. Deploy the updated index.html and the existing Firebase/Askly files together.
+2. In Apps Script, replace the script with SalesVsTarget.gs and save.
+3. Deploy > Manage deployments > Edit the existing Web App deployment > select New version > Deploy.
+4. If you created a NEW deployment (instead of editing the existing one), copy its /exec URL into Settings > Target Management > Shared Sales vs Target Storage > Connect. The dashboard's default endpoint may otherwise still point at the previous deployment.
+5. Open the /exec URL in a browser. It should return JSON containing `success: true` and a `salesVsTarget` array.
+6. Save a small test target and verify both SalesTarget and RevenueTarget in the SalesVsTarget sheet. The script adds a `RevenueTarget` header in the next available column if it is missing.
+
+The script checks the spreadsheet ID in SalesVsTarget.gs. Confirm it is the correct shared spreadsheet before deploying.

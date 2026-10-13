@@ -1,0 +1,33 @@
+SIMPLIAXIS DASHBOARD — MONTHLY REVENUE TARGET FIX
+
+WHAT THIS FIX CHANGES
+- Target Management now has separate Monthly Sales Target and Monthly Revenue Target columns.
+- The Edit Sales Executive form accepts both values and saves them together through the shared Apps Script endpoint.
+- SalesVsTarget.gs reads/writes the RevenueTarget field while preserving existing columns A:O.
+- The Apps Script adds a RevenueTarget header in the next available column if it does not exist (currently expected to be column P).
+- The browser only shows a success toast after the save is returned and verified.
+
+DEPLOY BOTH PARTS
+
+A. CLOUDflare Pages dashboard
+1. Deploy the files in this package to the same Cloudflare Pages project used by the dashboard.
+2. Keep index.html, firebase-config.js, firebase-db.js, and functions/api/ai.js in their current relative paths.
+3. Open the newly deployed dashboard and hard-refresh (Ctrl+F5).
+
+B. GOOGLE APPS SCRIPT
+1. Open the Apps Script project connected to the SalesVsTarget sheet.
+2. Back up the existing Code.gs, then replace it with SalesVsTarget.gs from this package.
+3. Save the script.
+4. Deploy > Manage deployments > Edit the existing Web App > select New version > Deploy.
+5. Keep the same /exec URL if editing the existing deployment. If you created a new deployment, update the dashboard shared target URL to the new /exec URL.
+6. Open the /exec URL in a browser and verify it returns JSON with success:true and a salesVsTarget array.
+
+TARGET STORAGE
+- SalesTarget remains in column D.
+- RevenueTarget is stored in the next available column with that header. Existing columns A:O are preserved.
+- A save is successful only after the server reads back the requested month, CRE, source, sales target, and revenue target.
+
+IMPORTANT
+The target amount is associated with the month currently selected in Sales vs Target (STATE.svt.month). The month visible in the Weekly Information panel may be a separate view selector. Check the month label in the edit dialog before saving if these selectors differ.
+
+JavaScript syntax checks passed for index.html's inline script, functions/api/ai.js, and the Apps Script source. Live Google Sheets writes still need to be verified in the deployed environment.
